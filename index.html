@@ -1,34 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>新闻</title>
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		#box {
-			width: 220px;
-			border: 1px solid #ccc;
-			margin: 10px auto;
-		}
-		#box p {
-			text-indent: 2em;
-			font-size: 12px;
-			padding: 15px 10px;
-			border-bottom: 1px dashed #ccc;
-		}
-		#box .last {
-			border-bottom: none;
-		}
-	</style>
+<meta name="view"/>
+<title></title>
+<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+	#box{
+		width:200px;
+		height:200px;
+		background:green;
+		position: absolute;
+		left:0;
+		top:0;
+	}
+</style>
+<script>
+	function drag(obj){
+		var l=0;
+		var t=0;
+		obj.addEventListener('touchstart',function(ev){
+			// 点击的时候获取到left值
+			var oldL=obj.offsetLeft;
+			// 点击的时候获取到top值
+			var oldT=obj.offsetTop;
+			var oldX=ev.targetTouches[0].pageX;
+			var oldY=ev.targetTouches[0].pageY;
+			obj.addEventListener('touchmove',move,false)
+			function move(ev){
+				// l t代表的是偏移量
+				 l=ev.targetTouches[0].pageX-oldX;
+				 t=ev.targetTouches[0].pageY-oldY;
+				 obj.style.WebkitTransform='translate+('+l+'px,'+t+'px)';
+			}
+			function end(){
+				obj.style.top=oldT+t+'px';
+				obj.style.left=oldL+l+'px';
+				obj.removeEventListener('touchmove',move,false)
+				obj.removeEventListener('touchend',end,false)
+			}
+			obj.addEventListener('touchend',end,false);
+		},false)
+	}
+	window.addEventListener('DOMContentLoaded',function(){
+		var oDiv=document.getElementById('box');
+		drag(oDiv);
+		
+},false)
+</script>
 </head>
 <body>
-	<div id="box">
-		<p>哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈</p>
-		<p>哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈</p>
-		<p class="last">哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈啊哈哈啊哈哈</p>
-	</div>
+<div id="box"></div>
 </body>
 </html>
